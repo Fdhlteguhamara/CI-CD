@@ -1,0 +1,33 @@
+name: Deploy to AWS EC2
+
+on:
+  push:
+    branches:
+      - main  # Trigger otomatis saat push ke branch main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Deploy to AWS EC2
+        run: |
+          # Perhatikan penggunaan ec2-user dan IP AWS Anda
+          ssh -o StrictHostKeyChecking=no ec2-18-234-242-71.compute-1.amazonaws.com << 'EOF'
+            # Masuk ke direktori web (pastikan folder ini sudah ada)
+            cd /usr/share/nginx/CI-CD
+            
+            # Jika folder ini adalah repo git
+            sudo git pull origin main
+            
+            # Restart Nginx untuk memastikan perubahan diterapkan
+            sudo systemctl restart nginx
+          EOF
