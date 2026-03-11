@@ -21,7 +21,7 @@ jobs:
       - name: Deploy to AWS EC2
         run: |
           # Perhatikan penggunaan ec2-user dan IP AWS Anda
-          ssh -o StrictHostKeyChecking=no ec2-18-234-242-71.compute-1.amazonaws.com << 'EOF'
+          ssh -o StrictHostKeyChecking=no ec2-user@ec218-234-242-71.compute-1.amazonaws.com << 'EOF'
             # Masuk ke direktori web (pastikan folder ini sudah ada)
             cd /usr/share/nginx/CI-CD
             
